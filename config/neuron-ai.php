@@ -72,6 +72,7 @@ return [
     'agents' => [
         'default_instructions' => env('NEURON_AI_DEFAULT_INSTRUCTIONS', 'You are a helpful AI assistant.'),
         'default_namespace' => 'App\\Agents',
+        'prompts_namespace' => 'App\\Agents\\Prompts',
         'timeout' => env('NEURON_AI_TIMEOUT', 30),
     ],
 

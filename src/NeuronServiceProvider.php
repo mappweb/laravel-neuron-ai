@@ -3,6 +3,8 @@ namespace Mappweb\LaravelNeuronAi;
 
 use Illuminate\Support\ServiceProvider;
 use Mappweb\LaravelNeuronAi\Console\Commands\AgentMakeCommand;
+use Mappweb\LaravelNeuronAi\Console\Commands\PromptMakeCommand;
+use NeuronAI\Agent;
 
 class NeuronServiceProvider extends ServiceProvider
 {
@@ -18,13 +20,14 @@ class NeuronServiceProvider extends ServiceProvider
 
         // Register the main service
         $this->app->singleton('neuron-ai', function ($app) {
-            return new \InspectorApm\NeuronAI\Agent();
+            return new Agent();
         });
 
         // Register console commands
         if ($this->app->runningInConsole()) {
             $this->commands([
                 AgentMakeCommand::class,
+                PromptMakeCommand::class,
             ]);
         }
     }

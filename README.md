@@ -5,61 +5,61 @@
 [![GitHub Code Style Action Status](https://img.shields.io/github/workflow/status/mappweb/laravel-neuron-ai/Check%20&%20fix%20styling?label=code%20style)](https://github.com/mappweb/laravel-neuron-ai/actions?query=workflow%3A"Check+%26+fix+styling"+branch%3Amain)
 [![Total Downloads](https://img.shields.io/packagist/dt/mappweb/laravel-neuron-ai.svg?style=flat-square)](https://packagist.org/packages/mappweb/laravel-neuron-ai)
 
-Un wrapper de Laravel para [neuron-ai](https://github.com/inspector-apm/neuron-ai) que facilita la integración del framework de agentes AI en aplicaciones Laravel.
+A Laravel wrapper for [neuron-ai](https://github.com/inspector-apm/neuron-ai) that facilitates the integration of the AI agents framework into Laravel applications.
 
+## Official Documentation
 
-## Documentación oficial
+**[Go to official documentation](https://neuron.inspector.dev/)**
 
-**[Ir a la documentación oficial](https://neuron.inspector.dev/)**
+## Guides and Tutorials
 
-## Guías y tutoriales
-
-CConsulte el archivo de guías técnicas y tutoriales para aprender a crear sus agentes de inteligencia artificial con Neuron.
+Check out the technical guides and tutorials file to learn how to create your artificial intelligence agents with Neuron.
 https://docs.neuron-ai.dev/resources/guides-and-tutorials.
 
-## Características
+## Features
 
-- 🚀 **Fácil instalación** - Configuración automática con auto-discovery
-- 🎨 **Comando Artisan** - Genera clases de agentes AI con `make:agent`
-- ⚙️ **Configuración flexible** - Soporte para múltiples proveedores AI
-- 🔧 **Facade incluida** - Acceso simple a través de `NeuronAI::`
-- 🧪 **Tests incluidos** - Suite completa de pruebas
-- 📚 **Documentación completa** - Ejemplos y guías detalladas
+- 🚀 **Easy installation** - Automatic configuration with auto-discovery
+- 🎨 **Artisan commands** - Generate AI agent classes with `make:agent` and prompt classes with `make:prompt`
+- ⚙️ **Flexible configuration** - Support for multiple AI providers
+- 🔧 **Facade included** - Simple access through `NeuronAI::`
+- 📝 **Flexible prompts** - Create custom prompt classes with any structure you need
+- 🧪 **Tests included** - Complete test suite
+- 📚 **Complete documentation** - Detailed examples and guides
 
-## Proveedores AI Soportados
+## Supported AI Providers
 
 - **OpenAI** (GPT-4, GPT-3.5-turbo)
 - **Anthropic** (Claude 3)
 - **Google Gemini**
-- **Ollama** (Modelos locales)
+- **Ollama** (Local models)
 
-## Instalación
+## Installation
 
-### Vía Composer
+### Via Composer
 
 ```bash
 composer require mappweb/laravel-neuron-ai
 ```
 
-### Publicar Configuración
+### Publish Configuration
 
 ```bash
-# Publicar archivo de configuración
+# Publish configuration file
 php artisan vendor:publish --provider="Mappweb\LaravelNeuronAi\NeuronServiceProvider" --tag="neuron-ai-config"
 
-# Publicar stubs para personalización
+# Publish stubs for customization
 php artisan vendor:publish --provider="Mappweb\LaravelNeuronAi\NeuronServiceProvider" --tag="neuron-ai-stubs"
 
-# Publicar todos los archivos
+# Publish all files
 php artisan vendor:publish --provider="Mappweb\LaravelNeuronAi\NeuronServiceProvider" --tag="neuron-ai"
 ```
 
-### Configuración
+### Configuration
 
-Agrega las siguientes variables a tu archivo `.env`:
+Add the following variables to your `.env` file:
 
 ```env
-# Configuración general
+# General configuration
 NEURON_AI_DEFAULT_PROVIDER=openai
 
 # OpenAI
@@ -73,36 +73,57 @@ ANTHROPIC_MODEL=claude-3-sonnet-20240229
 # Gemini
 GEMINI_API_KEY=your-gemini-api-key
 
-# Ollama (para modelos locales)
+# Ollama (for local models)
 OLLAMA_BASE_URL=http://localhost:11434
 OLLAMA_MODEL=llama2
 ```
 
-## Uso
+## Usage
 
-### Generar Agentes con Artisan
+### Generate Agents with Artisan
 
 ```bash
-# Agente básico
+# Basic agent
 php artisan make:agent ChatAgent
 
-# Agente con proveedor específico
+# Agent with specific provider
 php artisan make:agent ChatAgent --provider=openai
 
-# Agente con instrucciones personalizadas
+# Agent with custom instructions
 php artisan make:agent ChatAgent --instructions="You are a helpful customer support agent"
 
-# Agente con herramientas
+# Agent with tools
 php artisan make:agent ChatAgent --tools="WebSearch,EmailSender"
 
-# Agente completo
+# Complete agent
 php artisan make:agent CustomerSupportAgent \
     --provider=anthropic \
     --instructions="You are a customer support agent" \
     --tools="WebSearch,DatabaseQuery"
 ```
 
-### Ejemplo de Agente Generado
+### Generate Prompts with Artisan
+
+```bash
+# Basic prompt
+php artisan make:prompt ChatPrompt
+
+# Prompt with custom parameters
+php artisan make:prompt BlogPrompt --parameters="string $topic = 'Technology', int $wordCount = 500"
+
+# Prompt with content
+php artisan make:prompt GreetingPrompt --content="Hello! I'm {$this->name}, your assistant."
+
+# Complete prompt
+php artisan make:prompt ContentPrompt \
+    --parameters="string $title = 'Default', array $sections = []" \
+    --content="Create content about {$this->title} with sections: {implode(', ', $this->sections)}"
+
+# Prompt with custom path
+php artisan make:prompt CustomPrompt --path="Custom\\Prompts"
+```
+
+### Generated Agent Example
 
 ```php
 <?php
@@ -129,7 +150,7 @@ class ChatAgent extends Agent
 }
 ```
 
-### Uso en Controladores
+### Usage in Controllers
 
 ```php
 <?php
@@ -154,34 +175,34 @@ class ChatController extends Controller
 }
 ```
 
-### Uso con Facade
+### Usage with Facade
 
 ```php
 use Mappweb\LaravelNeuronAi\Facades\NeuronAI;
 
-// Uso básico
+// Basic usage
 $agent = NeuronAI::make()
     ->provider(OpenAIProvider::make())
     ->instructions('You are a helpful assistant');
 
 $response = $agent->chat('Hello!');
 
-// Con configuración desde config
+// With configuration from config
 $agent = NeuronAI::make()
     ->provider(config('neuron-ai.default_provider'))
     ->instructions(config('neuron-ai.agents.default_instructions'));
 ```
 
-### Configuración Avanzada
+### Advanced Configuration
 
-El archivo `config/neuron-ai.php` permite configurar:
+The `config/neuron-ai.php` file allows you to configure:
 
 ```php
 return [
-    // Proveedor por defecto
+    // Default provider
     'default_provider' => env('NEURON_AI_DEFAULT_PROVIDER', 'openai'),
     
-    // Configuración de proveedores
+    // Providers configuration
     'providers' => [
         'openai' => [
             'api_key' => env('OPENAI_API_KEY'),
@@ -189,17 +210,17 @@ return [
             'max_tokens' => env('OPENAI_MAX_TOKENS', 2048),
             'temperature' => env('OPENAI_TEMPERATURE', 0.7),
         ],
-        // ... otros proveedores
+        // ... other providers
     ],
     
-    // Configuración de agentes
+    // Agents configuration
     'agents' => [
         'default_instructions' => env('NEURON_AI_DEFAULT_INSTRUCTIONS', 'You are a helpful AI assistant.'),
         'default_namespace' => 'App\\Agents',
         'timeout' => env('NEURON_AI_TIMEOUT', 30),
     ],
     
-    // Logging y cache
+    // Logging and cache
     'logging' => [
         'enabled' => env('NEURON_AI_LOGGING_ENABLED', true),
         'channel' => env('NEURON_AI_LOG_CHANNEL', 'default'),
@@ -212,17 +233,54 @@ return [
 ];
 ```
 
-### Opciones del Comando `make:agent`
+### Generated Prompt Example
 
-| Opción | Descripción | Ejemplo |
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Agents\Prompts;
+
+use Mappweb\LaravelNeuronAi\Prompts\PromptInterface;
+
+class BlogPrompt implements PromptInterface
+{
+    public function __construct(
+        public string $topic = 'Technology',
+        public int $wordCount = 500,
+        public array $keywords = [],
+    ) {
+        //
+    }
+
+    public function __toString(): string
+    {
+        return "Write a {$this->wordCount}-word blog post about {$this->topic}. Include keywords: " . implode(', ', $this->keywords);
+    }
+}
+```
+
+### `make:agent` Command Options
+
+| Option | Description | Example |
 |--------|-------------|---------|
-| `--provider` | Proveedor AI a usar | `--provider=openai` |
-| `--instructions` | Instrucciones personalizadas | `--instructions="You are helpful"` |
-| `--tools` | Herramientas (separadas por comas) | `--tools="WebSearch,Email"` |
-| `--path` | Directorio personalizado | `--path="CustomAgents"` |
-| `--force` | Sobrescribir archivos existentes | `--force` |
+| `--provider` | AI provider to use | `--provider=openai` |
+| `--instructions` | Custom instructions | `--instructions="You are helpful"` |
+| `--tools` | Tools (comma-separated) | `--tools="WebSearch,Email"` |
+| `--path` | Custom directory | `--path="CustomAgents"` |
+| `--force` | Overwrite existing files | `--force` |
 
-### Proveedores Disponibles
+### `make:prompt` Command Options
+
+| Option | Description | Example |
+|--------|-------------|---------|
+| `--parameters` (`-p`) | Constructor parameters | `--parameters="string $title = 'Default'"` |
+| `--content` (`-c`) | Default content/template | `--content="Hello {$this->name}!"` |
+| `--path` | Custom directory | `--path="Custom\\Prompts"` |
+| `--force` (`-f`) | Overwrite existing files | `--force` |
+
+### Available Providers
 
 - `openai` → OpenAIProvider
 - `anthropic` → AnthropicProvider  
@@ -237,21 +295,22 @@ composer test
 
 ## Changelog
 
-Consulta [CHANGELOG](CHANGELOG.md) para ver los cambios recientes.
+Please see [CHANGELOG](CHANGELOG.md) for recent changes.
 
-## Contribuciones
+## Contributing
 
-Las contribuciones son bienvenidas. Por favor revisa [CONTRIBUTING](CONTRIBUTING.md) para más detalles.
+Contributions are welcome. Please review [CONTRIBUTING](CONTRIBUTING.md) for more details.
 
-## Seguridad
+## Security
 
-Si descubres vulnerabilidades de seguridad, envía un email a diego.toscanof@gmail.com.
+If you discover security vulnerabilities, please send an email to diego.toscanof@gmail.com.
 
-## Créditos
-- [neuron-ai.dev](https://github.com/inspector-apm/neuron-ai)
+## Credits
+
+- [Neuron-ai.dev](https://github.com/inspector-apm/neuron-ai)
 - [Diego Toscano](https://github.com/mappweb)
-- [Todos los contribuidores](../../contributors)
+- [All Contributors](../../contributors)
 
-## Licencia
+## License
 
-La licencia MIT (MIT). Consulta [License File](LICENSE.md) para más información.
+The MIT License (MIT). Please see [License File](LICENSE.md) for more information.

@@ -1,0 +1,22 @@
+<?php
+
+namespace DummyNamespace;
+
+use Mappweb\LaravelNeuronAi\Prompts\PromptInterface;
+
+class DummyClass implements PromptInterface
+{
+    public function __construct(
+        DummyConstructorParameters
+    ) {
+        //
+    }
+
+    /**
+     * Convert the prompt to string format.
+     */
+    public function __toString(): string
+    {
+        DummyToStringImplementation
+    }
+} 
