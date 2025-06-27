@@ -7,6 +7,16 @@
 
 Un wrapper de Laravel para [neuron-ai](https://github.com/inspector-apm/neuron-ai) que facilita la integración del framework de agentes AI en aplicaciones Laravel.
 
+
+## Documentación oficial
+
+**[Ir a la documentación oficial](https://neuron.inspector.dev/)**
+
+## Guías y tutoriales
+
+CConsulte el archivo de guías técnicas y tutoriales para aprender a crear sus agentes de inteligencia artificial con Neuron.
+https://docs.neuron-ai.dev/resources/guides-and-tutorials.
+
 ## Características
 
 - 🚀 **Fácil instalación** - Configuración automática con auto-discovery
@@ -238,7 +248,7 @@ Las contribuciones son bienvenidas. Por favor revisa [CONTRIBUTING](CONTRIBUTING
 Si descubres vulnerabilidades de seguridad, envía un email a diego.toscanof@gmail.com.
 
 ## Créditos
-
+- [neuron-ai.dev](https://github.com/inspector-apm/neuron-ai)
 - [Diego Toscano](https://github.com/mappweb)
 - [Todos los contribuidores](../../contributors)
 
