@@ -143,20 +143,20 @@ class AgentMakeCommand extends GeneratorCommand
     {
         $providerMap = [
             'openai' => [
-                'import' => 'use NeuronAI\Providers\OpenAIProvider;',
-                'implementation' => 'return OpenAIProvider::make();'
+                'import' => 'use NeuronAI\Providers\OpenAI\OpenAI;',
+                'implementation' => "return new OpenAI(config('neuron-ai.providers.openai.api_key'), config('neuron-ai.providers.openai.model'));"
             ],
             'anthropic' => [
-                'import' => 'use NeuronAI\Providers\AnthropicProvider;',
-                'implementation' => 'return AnthropicProvider::make();'
+                'import' => 'use NeuronAI\Providers\Anthropic\Anthropic;',
+                'implementation' => "return new Anthropic(config('neuron-ai.providers.anthropic.api_key'), config('neuron-ai.providers.anthropic.model'));"
             ],
             'gemini' => [
-                'import' => 'use NeuronAI\Providers\GeminiProvider;',
-                'implementation' => 'return GeminiProvider::make();'
+                'import' => 'use NeuronAI\Providers\Gemini\Gemini;',
+                'implementation' => "return new Gemini(config('neuron-ai.providers.gemini.api_key'), config('neuron-ai.providers.gemini.model'));"
             ],
             'ollama' => [
-                'import' => 'use NeuronAI\Providers\OllamaProvider;',
-                'implementation' => 'return OllamaProvider::make();'
+                'import' => 'use NeuronAI\Providers\Ollama\Ollama;',
+                'implementation' => "return new Ollama(config('neuron-ai.providers.ollama.base_url'), config('neuron-ai.providers.ollama.model'));"
             ],
         ];
 
