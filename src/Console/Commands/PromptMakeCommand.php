@@ -40,43 +40,15 @@ class PromptMakeCommand extends GeneratorCommand
         $stub = $this->files->get($this->getStub());
 
         return $this->replaceNamespace($stub, $name)
-                    ->replaceClass($stub, $name)
-                    ->replaceConstructorParameters($stub)
-                    ->replaceToStringMethod($stub);
-    }
+            ->replaceToStringMethod($stub)
+            ->replaceClass($stub, $name);
 
-    /**
-     * Replace constructor parameters in the stub.
-     */
-    protected function replaceConstructorParameters(&$stub): static
-    {
-        $parameters = $this->option('parameters');
-        
-        if (!$parameters) {
-            $stub = str_replace(
-                'DummyConstructorParameters',
-                '// TODO: Define your constructor parameters here' . PHP_EOL .
-                '        // Example: public string $content = \'\''
-            );
-        } else {
-            $paramList = array_map('trim', explode(',', $parameters));
-            $paramArray = array_map(function($param) {
-                return "        public " . trim($param) . ",";
-            }, $paramList);
-            
-            $stub = str_replace(
-                'DummyConstructorParameters', 
-                implode(PHP_EOL, $paramArray)
-            );
-        }
-        
-        return $this;
     }
 
     /**
      * Replace __toString method implementation.
      */
-    protected function replaceToStringMethod(&$stub): static
+    protected function replaceToStringMethod(&$stub)
     {
         $content = $this->option('content');
         
@@ -85,12 +57,14 @@ class PromptMakeCommand extends GeneratorCommand
                 'DummyToStringImplementation',
                 '// TODO: Implement your prompt string logic here' . PHP_EOL .
                 '        // Example: return $this->content;' . PHP_EOL .
-                '        return \'\';'
+                '        return \'\';',
+                $stub
             );
         } else {
             $stub = str_replace(
                 'DummyToStringImplementation',
-                "return '" . addslashes($content) . "';"
+                "return '" . addslashes($content) . "';",
+                $stub
             );
         }
         
@@ -103,7 +77,6 @@ class PromptMakeCommand extends GeneratorCommand
     protected function getOptions(): array
     {
         return [
-            ['parameters', 'p', InputOption::VALUE_OPTIONAL, 'Constructor parameters (e.g., "string $title = \'\'", "array $items = []")'],
             ['content', 'c', InputOption::VALUE_OPTIONAL, 'Default content for the prompt'],
             ['path', null, InputOption::VALUE_OPTIONAL, 'Custom directory path relative to app namespace'],
             ['force', 'f', InputOption::VALUE_NONE, 'Create the class even if the prompt already exists'],
@@ -128,13 +101,13 @@ class PromptMakeCommand extends GeneratorCommand
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle()
     {
         // Show information if no options are provided
         if (!$this->hasAnyOptions()) {
             $this->info('Generating prompt with basic structure.');
-            $this->comment('Use --parameters and --content to customize the generated prompt.');
-            $this->comment('Example: php artisan make:prompt MyPrompt --parameters="string $title = \'Default\'" --content="Hello {$this->title}"');
+            $this->comment('Use --content to customize the generated prompt.');
+            $this->comment('Example: php artisan make:prompt MyPrompt --content="You are an AI Agent specialized in writing YouTube video summaries."');
         }
 
         return parent::handle();
@@ -145,6 +118,6 @@ class PromptMakeCommand extends GeneratorCommand
      */
     protected function hasAnyOptions(): bool
     {
-        return $this->option('parameters') || $this->option('content');
+        return !empty($this->option('content'));
     }
 } 

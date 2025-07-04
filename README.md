@@ -108,16 +108,8 @@ php artisan make:agent CustomerSupportAgent \
 # Basic prompt
 php artisan make:prompt ChatPrompt
 
-# Prompt with custom parameters
-php artisan make:prompt BlogPrompt --parameters="string $topic = 'Technology', int $wordCount = 500"
-
-# Prompt with content
-php artisan make:prompt GreetingPrompt --content="Hello! I'm {$this->name}, your assistant."
-
 # Complete prompt
-php artisan make:prompt ContentPrompt \
-    --parameters="string $title = 'Default', array $sections = []" \
-    --content="Create content about {$this->title} with sections: {implode(', ', $this->sections)}"
+php artisan make:prompt GreetingPrompt --content="Hello! I'm {$this->name}, your assistant."
 
 # Prompt with custom path
 php artisan make:prompt CustomPrompt --path="Custom\\Prompts"
@@ -275,7 +267,6 @@ class BlogPrompt implements PromptInterface
 
 | Option | Description | Example |
 |--------|-------------|---------|
-| `--parameters` (`-p`) | Constructor parameters | `--parameters="string $title = 'Default'"` |
 | `--content` (`-c`) | Default content/template | `--content="Hello {$this->name}!"` |
 | `--path` | Custom directory | `--path="Custom\\Prompts"` |
 | `--force` (`-f`) | Overwrite existing files | `--force` |

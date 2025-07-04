@@ -6,12 +6,6 @@ use Mappweb\LaravelNeuronAi\Prompts\PromptInterface;
 
 class DummyClass implements PromptInterface
 {
-    public function __construct(
-        DummyConstructorParameters
-    ) {
-        //
-    }
-
     /**
      * Convert the prompt to string format.
      */
