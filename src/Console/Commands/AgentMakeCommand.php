@@ -39,16 +39,41 @@ class AgentMakeCommand extends GeneratorCommand
         $stub = $this->files->get($this->getStub());
 
         return $this->replaceNamespace($stub, $name)
-                    ->replaceClass($stub, $name)
-                    ->replaceProvider($stub)
-                    ->replaceInstructions($stub)
-                    ->replaceTools($stub);
+            ->configureImportOptions($stub)
+            ->replaceProvider($stub)
+            ->replaceInstructions($stub)
+            ->replaceTools($stub)
+            ->replaceClass($stub, $name);
+    }
+
+    /**
+     * @param $stub
+     * @return $this
+     */
+    protected function configureImportOptions(&$stub)
+    {
+        $provider = $this->option('provider');
+        $tools = $this->option('tools');
+        if ($provider && $tools ) {
+            $stub = str_replace('DummyClassImport', PHP_EOL . 'DummyProviderImport' . PHP_EOL . 'DummyToolsImports', $stub);
+        }
+        if (!$provider && !$tools ) {
+            $stub = str_replace('DummyClassImport', '', $stub);
+        }
+        if ($provider && !$tools ) {
+            $stub = str_replace('DummyClassImport', PHP_EOL . 'DummyProviderImport', $stub);
+        }
+        if (!$provider && $tools ) {
+            $stub = str_replace('DummyClassImport', PHP_EOL . 'DummyToolsImports', $stub);
+        }
+
+        return $this;
     }
 
     /**
      * Replace the provider implementation in the stub.
      */
-    protected function replaceProvider(&$stub): static
+    protected function replaceProvider(&$stub)
     {
         $provider = $this->option('provider');
         
@@ -72,7 +97,7 @@ class AgentMakeCommand extends GeneratorCommand
     /**
      * Replace the instructions implementation in the stub.
      */
-    protected function replaceInstructions(&$stub): static
+    protected function replaceInstructions(&$stub)
     {
         $instructions = $this->option('instructions');
         
@@ -93,7 +118,7 @@ class AgentMakeCommand extends GeneratorCommand
     /**
      * Replace the tools configuration in the stub.
      */
-    protected function replaceTools(&$stub): static
+    protected function replaceTools(&$stub)
     {
         $tools = $this->option('tools');
         
@@ -205,7 +230,7 @@ class AgentMakeCommand extends GeneratorCommand
     /**
      * Execute the console command.
      */
-    public function handle(): int
+    public function handle()
     {
         // Mostrar información si no se proporcionan opciones
         if (!$this->hasAnyOptions()) {

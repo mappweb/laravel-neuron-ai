@@ -3,9 +3,7 @@
 namespace DummyNamespace;
 
 use NeuronAI\Agent;
-use NeuronAI\Providers\AIProviderInterface;
-DummyProviderImport
-DummyToolsImports
+use NeuronAI\Providers\AIProviderInterface;DummyClassImport
 
 class DummyClass extends Agent
 {
@@ -23,5 +21,6 @@ class DummyClass extends Agent
     public function instructions(): string
     {
         DummyInstructions
-    }DummyToolsConfiguration
+    }
+    DummyToolsConfiguration
 } 
