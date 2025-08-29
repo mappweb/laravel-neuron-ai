@@ -11,6 +11,15 @@ use NeuronAI\Exceptions\ChatHistoryException;
 
 class CacheChatHistory extends AbstractChatHistory
 {
+    /**
+     * Instance constructor.
+     *
+     * @param string $key
+     * @param int $contextWindow
+     * @param string $prefix
+     * @param int $ttl
+     * @param string $cacheStore
+     */
     public function __construct(
         protected string $key,
         int              $contextWindow = 50000,
@@ -30,26 +39,27 @@ class CacheChatHistory extends AbstractChatHistory
     {
         $cachedData = Cache::store($this->cacheStore)->get($this->getCacheKey(), null);
 
-        if ($cachedData !== null) {
-            Log::debug('Chat history loaded from cache', [
-                'key' => $this->getCacheKey(),
-                'messages_count' => is_array($cachedData) ? count($cachedData) : 0
-            ]);
+        if (is_null($cachedData)) {
+            Log::debug('No chat history found in cache', ['key' => $this->getCacheKey()]);
+            return;
+        }
 
-            // Verificar si los datos están en formato serializado (arrays) o ya son objetos Message
-            if (!empty($cachedData) && is_array($cachedData)) {
-                if (isset($cachedData[0])) {
-                    // Si el primer elemento es un array, deserializar
-                    if (is_array($cachedData[0])) {
-                        $this->history = $this->deserializeMessages($cachedData);
-                    } // Si el primer elemento es un objeto Message, usar directamente
-                    elseif ($cachedData[0] instanceof Message) {
-                        $this->history = $cachedData;
-                    }
+        Log::debug('Chat history loaded from cache', [
+            'key' => $this->getCacheKey(),
+            'messages_count' => is_array($cachedData) ? count($cachedData) : 0
+        ]);
+
+        // Verificar si los datos están en formato serializado (arrays) o ya son objetos Message
+        if (!empty($cachedData) && is_array($cachedData)) {
+            if (isset($cachedData[0])) {
+                // Si el primer elemento es un array, deserializar
+                if (is_array($cachedData[0])) {
+                    $this->history = $this->deserializeMessages($cachedData);
+                } // Si el primer elemento es un objeto Message, usar directamente
+                elseif ($cachedData[0] instanceof Message) {
+                    $this->history = $cachedData;
                 }
             }
-        } else {
-            Log::debug('No chat history found in cache', ['key' => $this->getCacheKey()]);
         }
     }
 
@@ -111,6 +121,7 @@ class CacheChatHistory extends AbstractChatHistory
             return $message->jsonSerialize();
         }, $this->history);
 
+        //save message
         Cache::store($this->cacheStore)->put($cacheKey, $serializedMessages, $this->ttl);
 
         Log::debug('Chat history updated in cache', [
