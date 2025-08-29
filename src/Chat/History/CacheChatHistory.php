@@ -146,4 +146,15 @@ class CacheChatHistory extends AbstractChatHistory
 
         return $this;
     }
+
+    /**
+     * @param Message[] $messages
+     */
+    public function setMessages(array $messages): ChatHistoryInterface
+    {
+        $this->history = $messages;
+        $this->updateCache();
+
+        return $this;
+    }
 }
