@@ -5,14 +5,15 @@ namespace Mappweb\LaravelNeuronAi\Facades;
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @method static \InspectorApm\NeuronAI\Agent make()
- * @method static \InspectorApm\NeuronAI\Agent provider(\InspectorApm\NeuronAI\Providers\AIProviderInterface $provider)
- * @method static \InspectorApm\NeuronAI\Agent instructions(string $instructions)
- * @method static \InspectorApm\NeuronAI\Agent tools(array $tools)
+ * @method static Agent
+ * @method static \NeuronAI\Agent make()
+ * @method static \NeuronAI\Agent provider(\NeuronAI\Providers\AIProviderInterface $provider)
+ * @method static \NeuronAI\Agent instructions(string $instructions)
+ * @method static \NeuronAI\Agent tools(array $tools)
  * @method static string chat(string $message)
  * @method static array stream(string $message)
  *
- * @see \InspectorApm\NeuronAI\Agent
+ * @see \NeuronAI\Agent
  */
 class NeuronAI extends Facade
 {
