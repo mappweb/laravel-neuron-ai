@@ -142,6 +142,32 @@ class ChatAgent extends Agent
 }
 ```
 
+### Generated Trascribe Agent Example
+
+```php
+<?php
+
+declare(strict_types=1);
+
+namespace App\Agents;
+
+use NeuronAI\Agent;
+use Mappweb\LaravelNeuronAi\Providers\OpenAI\OpenAITranscribeProvider;
+use Mappweb\LaravelNeuronAi\Transcribe\TranscribeProviderInterface;
+
+class TranscribeAgent extends Transcribe
+{
+    public function transcribe(): TranscribeProviderInterface
+    {
+        return new OpenAITranscribeProvider(
+            config('neuron-ai.providers.openai.api_key'),
+            'whisper-1',
+            'es',
+        );
+    }
+}
+```
+
 ### Usage in Controllers
 
 ```php
